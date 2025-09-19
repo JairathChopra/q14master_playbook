@@ -1,0 +1,25 @@
+---
+- name: Deploy file from variables
+  hosts: testing
+  gather_facts: no
+  become: true
+
+  vars:
+    content: "This is exam content\n"
+    directory: "/tmp"
+    file: "exam.txt"
+
+  tasks:
+    - name: Ensure target directory exists
+      file:
+        path: "{{ directory }}"
+        state: directory
+        mode: '0755'
+
+    - name: Deploy file with content
+      copy:
+        content: "{{ content }}"
+        dest: "{{ directory }}/{{ file }}"
+        owner: root
+        group: root
+        mode: '0644'
